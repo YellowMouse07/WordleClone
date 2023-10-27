@@ -3,7 +3,7 @@ import { word1 } from "./Words";
 var words;
 
 function word() {
-  words = word1;
+  words = localStorage.getItem("wordle");
 
   console.log(words);
 }

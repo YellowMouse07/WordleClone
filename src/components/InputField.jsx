@@ -18,15 +18,11 @@ function InputField(props) {
   }
 
   function submitResponse() {
-    if (props.value.length === 5 && props.response.length <= 5) {
+    if (props.value.length === 5 && props.response.length <= 6) {
       let count = JSON.parse(localStorage.getItem("count"));
       let winCount = JSON.parse(localStorage.getItem("winCount"));
       let loseCount = JSON.parse(localStorage.getItem("loseCount"));
-      if (props.response.length === 5) {
-        setLost(true);
-        loseCount++;
-        localStorage.setItem("loseCount", JSON.stringify(loseCount));
-      }
+
       if (props.value === getWord()) {
         props.setResponse(props.value);
         props.fetch("");
@@ -39,9 +35,15 @@ function InputField(props) {
         props.setResponse(props.value);
         props.fetch("");
       }
+      if (props.response.length === 5) {
+        if (!(props.value === getWord())) {
+          setLost(true);
+          loseCount++;
+          localStorage.setItem("loseCount", JSON.stringify(loseCount));
+        }
+      }
     }
   }
-
   return (
     <>
       <div className="flex flex-col gap-5">
@@ -81,14 +83,22 @@ function InputField(props) {
           disable ? " scale-100 bg-opacity-5 " : " scale-0 bg-opacity-0 "
         }`}
       >
-        <UserStats value="CONGRATULATIONS!" />
+        <UserStats
+          setResponse={props.clearResponse}
+          setDisable={setDisable}
+          value="CONGRATULATIONS!"
+        />
       </div>
       <div
         className={`flex items-center justify-center duration-300 absolute h-[100vh] w-[100vw]  backdrop-blur-[2px]  ${
           lost ? " scale-100 bg-opacity-5 " : " scale-0 bg-opacity-0 "
         }`}
       >
-        <UserStats value={`Sorry! The word is "${getWord()}"`} />
+        <UserStats
+          setResponse={props.clearResponse}
+          setDisable={setDisable}
+          value={`Sorry! The word is "${getWord()}"`}
+        />
       </div>
     </>
   );

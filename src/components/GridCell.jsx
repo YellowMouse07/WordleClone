@@ -3,6 +3,7 @@ import { getWord } from "./Word";
 
 export const GridCell = ({ position, value, response }) => {
   const [style, setStyle] = useState(" bg-gray-200 ");
+
   const word = getWord();
   useEffect(() => {
     response !== undefined && handleColor();

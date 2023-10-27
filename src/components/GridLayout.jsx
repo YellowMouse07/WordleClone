@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InputGrid } from "./InputGrid";
 import { InputField } from "./InputField";
-
+let val = JSON.parse(localStorage.getItem("userResponse"));
+let setlen;
+if (val == []) {
+  setlen = [];
+} else {
+  setlen = val;
+}
 export const GridLayout = () => {
-  const [response, setResponse] = useState([]);
+  const [response, setResponse] = useState(setlen || []);
+  useEffect(() => {
+    localStorage.setItem("userResponse", JSON.stringify(response));
+  }, [response]);
   const [value, setValue] = useState("");
 
   function onSubmit(value) {
@@ -24,6 +33,7 @@ export const GridLayout = () => {
         fetch={setValue}
         response={response}
         setResponse={onSubmit}
+        clearResponse={setResponse}
         value={value}
       />
     </>
